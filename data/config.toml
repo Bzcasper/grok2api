@@ -1,7 +1,7 @@
 [app]
-app_url = "http://127.0.0.1:8000"
+app_url = "https://grok2api-umber.vercel.app"
 app_key = "grok2api"
-api_key = ""
+api_key = "sk-80408040"
 image_format = "url"
 video_format = "html"
 

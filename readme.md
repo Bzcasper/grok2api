@@ -1,23 +1,23 @@
 # Grok2API
 
-**中文** | [English](docs/README.en.md)
+**Chinese** | [English](docs/README.en.md)
 
 > [!NOTE]
-> 本项目仅供学习与研究，使用者必须在遵循 Grok 的 **使用条款** 以及 **法律法规** 的情况下使用，不得用于非法用途。
+This project is for learning and research purposes only. Users must use it in accordance with Grok's **Terms of Use** and **Laws and Regulations**, and it must not be used for illegal purposes.
 
-基于 **FastAPI** 重构的 Grok2API，全面适配最新 Web 调用格式，支持流/非流式对话、图像生成/编辑、深度思考，号池并发与自动负载均衡一体化。
+Grok2API, rebuilt based on FastAPI, is fully adapted to the latest web call formats, supporting streaming/non-streaming conversations, image generation/editing, deep thinking, and integrated account pool concurrency and automatic load balancing.
 
-### NOTE：项目近期停止接受 PR 和 暂停功能更新，最后优化一次项目结构～
+### NOTE: This project will temporarily stop accepting pull requests and pause feature updates. We are conducting a final project structure optimization.
 
 <img width="2562" height="1280" alt="image" src="https://github.com/user-attachments/assets/356d772a-65e1-47bd-abc8-c00bb0e2c9cc" />
 
 <br>
 
-## 使用说明
+## Instructions for Use
 
-### 如何启动
+### How to start
 
-- 本地开发
+- Local development
 
 ```
 uv sync
@@ -25,49 +25,49 @@ uv sync
 uv run main.py
 ```
 
-### 如何部署
+### How to deploy
 
 
-#### docker compose 部署
+#### Docker Compose Deployment
 ```
 git clone https://github.com/chenyme/grok2api
 
 docker compose up -d
 ```
 
-#### Vercel 部署
+#### Vercel Deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chenyme/grok2api&env=LOG_LEVEL,LOG_FILE_ENABLED,DATA_DIR,SERVER_STORAGE_TYPE,SERVER_STORAGE_URL&envDefaults=%7B%22DATA_DIR%22%3A%22/tmp/data%22%2C%22LOG_FILE_ENABLED%22%3A%22false%22%2C%22LOG_LEVEL%22%3A%22INFO%22%2C%22SERVER_STORAGE_TYPE%22%3A%22local%22%2C%22SERVER_STORAGE_URL%22%3A%22%22%7D)
 
-> 请务必设置 DATA_DIR=/tmp/data，并关闭文件日志 LOG_FILE_ENABLED=false。
+Please be sure to set DATA_DIR=/tmp/data and disable file logging LOG_FILE_ENABLED=false.
 >
-> 持久化请使用 MySQL / Redis / PostgreSQL，在 Vercel 环境变量中设置：SERVER_STORAGE_TYPE（mysql/redis/pgsql）与 SERVER_STORAGE_URL。
+For persistence, please use MySQL/Redis/PostgreSQL and set SERVER_STORAGE_TYPE (mysql/redis/pgsql) and SERVER_STORAGE_URL in the Vercel environment variables.
 
-#### Render 部署
+#### Render Deployment
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/chenyme/grok2api)
 
-> Render 免费实例 15 分钟无访问会休眠，恢复/重启/重新部署会丢失。
+The Render free instance will hibernate if there is no access for 15 minutes. It will be lost if it is restored/restarted/redeployed.
 >
-> 持久化请使用 MySQL / Redis / PostgreSQL，在 Render 环境变量中设置：SERVER_STORAGE_TYPE（mysql/redis/pgsql）与 SERVER_STORAGE_URL。
+For persistence, please use MySQL/Redis/PostgreSQL, and set SERVER_STORAGE_TYPE (mysql/redis/pgsql) and SERVER_STORAGE_URL in the Render environment variables.
 
-### 管理面板
+### Management Panel
 
-访问地址：`http://<host>:8000/admin`
-默认登录密码：`grok2api`（对应配置项 `app.app_key`，建议修改）。
+Access address: `http:// :8000/admin`
+Default login password: `grok2api` (corresponding to the configuration item `app.app_key`, it is recommended to change it).
 
-**功能说明**：
+**Function Description**:
 
-- **Token 管理**：导入/添加/删除 Token，查看状态和配额
-- **状态筛选**：按状态（正常/限流/失效）或 NSFW 状态筛选
-- **批量操作**：批量刷新、导出、删除、开启 NSFW
-- **NSFW 开启**：一键为 Token 开启 Unhinged 模式（需代理或 cf_clearance）
-- **配置管理**：在线修改系统配置
-- **缓存管理**：查看和清理媒体缓存
+- **Token Management**: Import/add/delete tokens, view status and quotas.
+- **Status Filtering**: Filter by status (normal/rate limiting/failure) or NSFW status.
+- **Batch Operations**: Batch refresh, export, delete, enable NSFW
+- **NSFW Enablement**: Enable Unhinged mode for tokens with one click (requires proxy or cf_clearance)
+- **Configuration Management**: Modify system configuration online
+- **Cache Management**: View and clear media cache
 
-### 环境变量
+### Environment Variables
 
-> 配置 `.env` 文件
+> Configure the `.env` file
 
 | 变量名                  | 说明                                                | 默认值      | 示例                                                |
 | :---------------------- | :-------------------------------------------------- | :---------- | :-------------------------------------------------- |
@@ -80,14 +80,14 @@ docker compose up -d
 | `SERVER_STORAGE_TYPE` | 存储类型（`local`/`redis`/`mysql`/`pgsql`） | `local`   | `pgsql`                                           |
 | `SERVER_STORAGE_URL`  | 存储连接串（local 时可为空）                        | `""`      | `postgresql+asyncpg://user:password@host:5432/db` |
 
-> MySQL 示例：`mysql+aiomysql://user:password@host:3306/db`（若填 `mysql://` 会自动转为 `mysql+aiomysql://`）
+MySQL Example: `mysql+aiomysql://user:password@host:3306/db` (If you fill in `mysql://`, it will automatically be converted to `mysql+aiomysql://`)
 
-### 可用次数
+### Available Times
 
-- Basic 账号：80 次 / 20h
-- Super 账号：140 次 / 2h
+- Basic Account: 80 times / 20 hours
+Super Account: 140 times / 2 hours
 
-### 可用模型
+### Available Models
 
 | 模型名                     | 计次 | 可用账号    | 对话功能 | 图像功能 | 视频功能 |
 | :------------------------- | :--: | :---------- | :------: | :------: | :------: |
@@ -105,11 +105,11 @@ docker compose up -d
 
 <br>
 
-## 接口说明
+## Interface Description
 
 ### `POST /v1/chat/completions`
 
-> 通用接口，支持对话聊天、图像生成、图像编辑、视频生成、视频超分
+A universal interface that supports conversational chat, image generation, image editing, video generation, and video super-resolution.
 
 ```bash
 curl http://localhost:8000/v1/chat/completions \
@@ -117,12 +117,12 @@ curl http://localhost:8000/v1/chat/completions \
   -H "Authorization: Bearer $GROK2API_API_KEY" \
   -d '{
     "model": "grok-4",
-    "messages": [{"role":"user","content":"你好"}]
+"messages": [{"role":"user","content":"Hello"}]
   }'
 ```
 
 <details>
-<summary>支持的请求参数</summary>
+Supported request parameters
 
 <br>
 
@@ -138,14 +138,14 @@ curl http://localhost:8000/v1/chat/completions \
 | └─`resolution_name` | string  | 分辨率                         | `480p`, `720p`                            |
 | └─`preset`          | string  | 风格预设                       | `fun`, `normal`, `spicy`, `custom`    |
 
-**消息格式 (messages)**：
+**Message Format**:
 
 | 字段        | 类型         | 说明                                                     |
 | :---------- | :----------- | :------------------------------------------------------- |
 | `role`    | string       | 角色：`developer`, `system`, `user`, `assistant` |
 | `content` | string/array | 消息内容，支持纯文本或多模态数组                         |
 
-**多模态内容块类型 (content array)**：
+**Multimodal content array type:**
 
 | type          | 说明     | 示例                                                           |
 | :------------ | :------- | :------------------------------------------------------------- |
@@ -153,7 +153,7 @@ curl http://localhost:8000/v1/chat/completions \
 | `image_url` | 图片 URL | `{"type": "image_url", "image_url": {"url": "https://..."}}` |
 | `file`      | 文件     | `{"type": "file", "file": {"url": "https://..."}}`           |
 
-注：除上述外的其他参数将自动丢弃并忽略
+Note: Other parameters not mentioned above will be automatically discarded and ignored.
 
 <br>
 
@@ -163,7 +163,7 @@ curl http://localhost:8000/v1/chat/completions \
 
 ### `POST /v1/images/generations`
 
-> 图像生成接口
+Image generation interface
 
 ```bash
 curl http://localhost:8000/v1/images/generations \
@@ -171,13 +171,13 @@ curl http://localhost:8000/v1/images/generations \
   -H "Authorization: Bearer $GROK2API_API_KEY" \
   -d '{
     "model": "grok-imagine-1.0",
-    "prompt": "一只在太空漂浮的猫",
+"prompt": "A cat floating in space",
     "n": 1
   }'
 ```
 
 <details>
-<summary>支持的请求参数</summary>
+Supported request parameters
 
 <br>
 
@@ -192,8 +192,8 @@ curl http://localhost:8000/v1/images/generations \
 | `response_format` | string  | 响应格式         | `url`, `b64_json`                        |
 | `style`           | string  | 风格             | - (暂不支持)                                 |
 
-注：`quality`、`style` 参数为 OpenAI 兼容保留，当前版本暂不支持自定义。
-当开启 `grok.image_ws=true` 时，`size` 将映射为宽高比（仅支持 5 种：`16:9`、`9:16`、`1:1`、`2:3`、`3:2`），也可以直接传以上比例字符串：
+Note: The `quality` and `style` parameters are reserved for OpenAI compatibility and are not currently supported for customization in the current version.
+When `grok.image_ws=true` is enabled, `size` will be mapped to aspect ratio (only 5 are supported: `16:9`, `9:16`, `1:1`, `2:3`, `3:2`). Alternatively, you can directly pass the above aspect ratio strings.
 `1024x576/1280x720/1536x864 -> 16:9`，`576x1024/720x1280/864x1536 -> 9:16`，`1024x1024/512x512 -> 1:1`，`1024x1536/512x768/768x1024 -> 2:3`，`1536x1024/768x512/1024x768 -> 3:2`，其他值默认 `2:3`。
 
 <br>
@@ -204,19 +204,19 @@ curl http://localhost:8000/v1/images/generations \
 
 ### `POST /v1/images/edits`
 
-> 图像编辑接口（multipart/form-data）
+Image editing interface (multipart/form-data)
 
 ```bash
 curl http://localhost:8000/v1/images/edits \
   -H "Authorization: Bearer $GROK2API_API_KEY" \
   -F "model=grok-imagine-1.0-edit" \
-  -F "prompt=把图片变清晰" \
+-F "prompt=Make the image clearer" \
   -F "image=@/path/to/image.png" \
   -F "n=1"
 ```
 
 <details>
-<summary>支持的请求参数</summary>
+Supported request parameters
 
 <br>
 
@@ -232,7 +232,7 @@ curl http://localhost:8000/v1/images/edits \
 | `response_format` | string  | 响应格式         | `url`, `b64_json`                        |
 | `style`           | string  | 风格             | - (暂不支持)                                 |
 
-注：`size`、`quality`、`style` 参数为 OpenAI 兼容保留，当前版本暂不支持自定义
+Note: The `size`, `quality`, and `style` parameters are reserved for OpenAI compatibility and are not currently supported by custom parameters.
 
 <br>
 
@@ -240,17 +240,17 @@ curl http://localhost:8000/v1/images/edits \
 
 <br>
 
-## 参数配置
+## Parameter Configuration
 
-配置文件：`data/config.toml`
+Configuration file: `data/config.toml`
 
 > [!NOTE]
-> 生产环境或反向代理部署时，请确保 `app.app_url` 配置为对外可访问的完整 URL，
-> 否则可能出现文件访问链接不正确或 403 等问题。
+When deploying in a production environment or via a reverse proxy, ensure that `app.app_url` is configured as a fully accessible URL.
+Otherwise, problems such as incorrect file access links or 403 errors may occur.
 
 > [!TIP]
-> **v2.0 配置结构升级**：旧版本用户更新后，配置会**自动迁移**到新结构，无需手动修改。
-> 旧的 `[grok]` 配置节中的自定义值会自动映射到对应的新配置节。
+> **v2.0 Configuration Structure Upgrade**: After users of the old version update, their configuration will **automatically migrate** to the new structure without requiring manual modification.
+Custom values in the old `[grok]` configuration section will be automatically mapped to the corresponding new configuration section.
 
 | 模块                  | 字段                             | 配置名             | 说明                                                  | 默认值                                                    |
 | :-------------------- | :------------------------------- | :----------------- | :---------------------------------------------------- | :-------------------------------------------------------- |
