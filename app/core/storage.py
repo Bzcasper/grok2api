@@ -788,7 +788,7 @@ class StorageFactory:
             return cls._instance
 
         storage_type = os.getenv("SERVER_STORAGE_TYPE", "local").lower()
-        storage_url = os.getenv("SERVER_STORAGE_URL", "")
+        storage_url = os.getenv("SERVER_STORAGE_URL", "") or os.getenv("REDIS_URL", "")
 
         logger.info(f"StorageFactory: 初始化存储后端: {storage_type}")
 
