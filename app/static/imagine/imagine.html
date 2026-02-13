@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-Grok2API - Imagine Waterfall
+  <title>Grok2API - Imagine Stream</title>
   <link rel="icon" href="/static/favicon/favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/geist@1.0.0/dist/fonts/geist-sans/style.css" rel="stylesheet">
@@ -21,39 +21,39 @@ Grok2API - Imagine Waterfall
   <main class="flex-1 container mx-auto max-w-5xl px-6 py-8 fade-in">
     <div class="space-y-6">
         <div>
-Imagine a waterfall
-Images are continuously generated via WebSocket and displayed in a base64 waterfall layout in real time.
+          <h2 class="text-2xl font-semibold tracking-tight">Imagine Stream</h2>
+          <p class="text-[var(--accents-4)] mt-1 text-sm">Generate images via WebSocket with real-time base64 streaming.</p>
         </div>
 
         <div class="h-px bg-[var(--border)]"></div>
 
       <div class="imagine-top-grid">
         <div class="imagine-card imagine-card-collapsible">
-Generate settings
+          <div class="card-title">Generation Settings</div>
           <div class="card-content" id="settingsContent">
             <div class="settings-layout">
               <div class="settings-top">
                 <div class="settings-prompt">
-Prompt words
-
+                  <label class="field-label" for="promptInput">Prompt</label>
+                  <textarea id="promptInput" class="geist-input imagine-textarea" placeholder="Describe the image you want, e.g.: Futuristic city neon night, wide-angle photography"></textarea>
                 </div>
                 <div class="settings-options">
                   <div>
-Aspect Ratio
+                    <label class="field-label" for="ratioSelect">Aspect Ratio</label>
                     <select id="ratioSelect" class="geist-input">
-2:3 vertical image
-1:1 Square Diagram
-3:2 horizontal image
-16:9 widescreen
-9:16 Vertical screen
+                      <option value="2:3" selected>2:3 Portrait</option>
+                      <option value="1:1">1:1 Square</option>
+                      <option value="3:2">3:2 Landscape</option>
+                      <option value="16:9">16:9 Wide</option>
+                      <option value="9:16">9:16 Tall</option>
                     </select>
                   </div>
                   <div>
-Concurrency
+                    <label class="field-label" for="concurrentSelect">Concurrency</label>
                     <select id="concurrentSelect" class="geist-input">
-1 task
-2 tasks
-3 tasks
+                      <option value="1" selected>1 task</option>
+                      <option value="2">2 tasks</option>
+                      <option value="3">3 tasks</option>
                     </select>
                   </div>
                 </div>
@@ -62,29 +62,29 @@ Concurrency
               <div class="settings-bottom-row">
                 <div class="settings-toggles">
                   <div class="settings-toggle">
-Automatic Follow
+                    <label class="field-label" for="autoScrollToggle">Auto Follow</label>
                     <label class="toggle">
                       <input id="autoScrollToggle" type="checkbox" checked>
                       <span class="toggle-track"></span>
-Scroll to latest
+                      <span class="toggle-label">Scroll to latest</span>
                     </label>
                   </div>
                   <div class="settings-toggle">
-Automatic download
+                    <label class="field-label" for="autoDownloadToggle">Auto Download</label>
                     <label class="toggle">
                       <input id="autoDownloadToggle" type="checkbox">
                       <span class="toggle-track"></span>
-Automatically save images
+                      <span class="toggle-label">Auto save images</span>
                     </label>
                   </div>
                 </div>
                 <div class="settings-folder">
-Save location
+                  <label class="field-label">Save Location</label>
                   <button id="selectFolderBtn" class="geist-button-outline folder-select-btn" disabled>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
                     </svg>
-browser default location
+                    <span id="folderPath">Browser default</span>
                   </button>
                 </div>
               </div>
@@ -94,8 +94,8 @@ browser default location
 
         <div class="imagine-card imagine-card-collapsible">
           <div class="status-header-row" id="statusToggle">
-Connection status
-Not connected
+            <div class="card-title">Connection Status</div>
+            <span id="statusText" class="status-text">Not Connected</span>
             <svg class="collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -103,7 +103,7 @@ Not connected
           <div class="card-content" id="statusContent">
             <div class="meta-grid">
             <div class="meta-item mode-item">
-Connection mode
+              <div class="meta-label">Connection Mode</div>
               <div class="mode-switch" role="group" aria-label="Connection mode">
                 <button class="mode-btn" data-mode="auto" type="button">Auto</button>
                 <button class="mode-btn" data-mode="ws" type="button">WS</button>
@@ -111,15 +111,15 @@ Connection mode
               </div>
             </div>
             <div class="meta-item">
-Number of images
+              <div class="meta-label">Image Count</div>
               <div id="countValue" class="meta-value">0</div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">活跃任务</div>
+              <div class="meta-label">Active Tasks</div>
               <div id="activeValue" class="meta-value">0</div>
             </div>
             <div class="meta-item">
-              <div class="meta-label">平均耗时</div>
+              <div class="meta-label">Avg Latency</div>
               <div id="latencyValue" class="meta-value">-</div>
             </div>
             </div>
@@ -133,12 +133,12 @@ Number of images
           <div class="waterfall-actions">
           </div>
         </div>
-Waiting to connect...
+        <div id="emptyState" class="imagine-empty">Waiting for connection...</div>
         <div id="waterfall" class="waterfall"></div>
       </div>
   </main>
 
-
+  <!-- 图片放大预览 -->
   <div id="lightbox" class="image-lightbox">
     <button class="lightbox-close" id="closeLightbox">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -164,33 +164,33 @@ Waiting to connect...
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polygon points="5 3 19 12 5 21 5 3" />
       </svg>
-      开始
+      Start
     </button>
     <button id="stopBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100 hidden">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <rect x="5" y="5" width="14" height="14" />
       </svg>
-      停止
+      Stop
     </button>
     <span class="toolbar-sep"></span>
     <button id="clearBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-red-100">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
       </svg>
-      清空
+      Clear
     </button>
     <span class="toolbar-sep"></span>
-
+    <button id="batchDownloadBtn" class="batch-download-btn geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100" title="批量下载">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
         <polyline points="7 10 12 15 17 10"></polyline>
         <line x1="12" y1="15" x2="12" y2="3"></line>
       </svg>
-batch
+      <span>Batch</span>
     </button>
     <div id="selectionToolbar" class="selection-toolbar hidden">
-      <button id="toggleSelectAllBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100">全选</button>
-      <button id="downloadSelectedBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100">下载 <span id="selectedCount" class="selected-count">0</span></button>
+      <button id="toggleSelectAllBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100">Select All</button>
+      <button id="downloadSelectedBtn" class="geist-button-outline text-xs px-3 gap-1 border-0 hover:bg-gray-100">Download <span id="selectedCount" class="selected-count">0</span></button>
     </div>
   </div>
 
