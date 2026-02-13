@@ -417,13 +417,13 @@
   async function startConnection() {
     const prompt = promptInput ? promptInput.value.trim() : '';
     if (!prompt) {
-      toast('请输入提示词', 'error');
+      toast('Please enter a prompt', 'error');
       return;
     }
 
     const apiKey = await ensureApiKey();
     if (apiKey === null) {
-      toast('请先登录后台', 'error');
+      toast('Please login to admin panel first', 'error');
       return;
     }
 
@@ -431,12 +431,12 @@
     const ratio = ratioSelect ? ratioSelect.value : '2:3';
     
     if (isRunning) {
-      toast('已在运行中', 'warning');
+      toast('Already running', 'warning');
       return;
     }
 
     isRunning = true;
-    setStatus('connecting', '连接中');
+    setStatus('connecting', 'Connecting');
     startBtn.disabled = true;
 
     if (pendingFallbackTimer) {
@@ -448,7 +448,7 @@
     try {
       taskIds = await createImagineTasks(prompt, ratio, concurrent, apiKey);
     } catch (e) {
-      setStatus('error', '创建任务失败');
+      setStatus('error', 'Failed to create task');
       startBtn.disabled = false;
       isRunning = false;
       return;
